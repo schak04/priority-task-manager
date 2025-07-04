@@ -29,6 +29,7 @@ class TaskManager {
     // function to add a task
     void addTask(Task task) {
         tasks.push(task);
+        cout << "Task added successfully.\n";
     }
 
     // function to display all the tasks
@@ -55,6 +56,7 @@ class TaskManager {
 
     // helper function to extract all the tasks from the priority queue into a vector
     void makeTasksVec() {
+        tasksVec.clear(); // clear old data
         priority_queue<Task, vector<Task>, CompareTask> temp = tasks; // temp priority queue
         
         while (!temp.empty()) {
@@ -63,14 +65,26 @@ class TaskManager {
         }
     }
 
+    // helper function to rebuild the priority queue
+    void rebuildPriorityQueue() {
+        tasks = priority_queue<Task, vector<Task>, CompareTask>();
+        for (auto& t : tasksVec) tasks.push(t);
+    }
+
     // function to update a task
     void updateTask() {
         showAllTasks(); // for user to choose which one to update
 
         makeTasksVec(); // to be able to access and update by index
 
-        cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn;
-        cout << "Alright. Updating Task " << tn << "...\n";
+        cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn; tn--;
+
+        if (tn < 0 || tn >= tasksVec.size()) {
+            cout << "Invalid task number.\n";
+            return;
+        }
+        
+        cout << "Alright. Updating Task " << tn+1 << "...\n";
 
         cout << "Enter a new name for the task \"" << tasksVec[tn].taskName << "\": ";
         string newName; getline(cin, newName);
@@ -87,6 +101,10 @@ class TaskManager {
         cout << "Enter a new priority for the task \"" << tasksVec[tn].taskName << "\": ";
         int newPriority; cin >> newPriority;
         tasksVec[tn].priority = newPriority;
+
+        rebuildPriorityQueue();
+
+        cout << "Task updated successfully.\n";
     }
 
     // function to mark a task as completed
@@ -95,9 +113,12 @@ class TaskManager {
 
         makeTasksVec(); // to access by index and set the completed flag to 'true'
 
-        cout << "Which task would you like to mark as completed? (Enter task no.): "; int tn; cin>>tn;
+        cout << "Which task would you like to mark as completed? (Enter task no.): "; int tn; cin>>tn; tn--;
         tasksVec[tn].completed = true;
-        cout << "Selected task marked as completed.";
+
+        rebuildPriorityQueue();
+
+        cout << "Selected task marked as completed.\n";
     }
     
     // function to remove a task
@@ -106,12 +127,27 @@ class TaskManager {
         
         makeTasksVec(); // to access by index and remove
         
-        cout << "Which task would you like to remove? (Enter task no.): "; int tn; cin>>tn;
-        // deletion yet to be implemented
+        cout << "Which task would you like to remove? (Enter task no.): "; int tn; cin>>tn; tn--;
+
+        if (tn < 0 || tn >= tasksVec.size()) {
+            cout << "Invalid task number.\n";
+            return;
+        }
+
+        tasksVec.erase(tasksVec.begin()+tn);
+
+        rebuildPriorityQueue();
+        
+        cout << "Task removed successfully.\n";
     }
 
-    // function to remove or clear all the tasks
-    void clearAllTasks() {};
+    // function to clear all the tasks
+    void clearAllTasks() {
+        while (!tasks.empty()) tasks.pop();
+        tasksVec.clear();
+        cout << "Clearing all the tasks...\n";
+        cout << "All tasks cleared.\n";
+    }
 };
 
 void printWelcomePage() {
@@ -157,15 +193,26 @@ int main() {
             }
             t.completed = false;
             tm.addTask(t);
-            cout << "Task added successfully!\n";
             break;
         }
         case 2: {
             tm.updateTask();
             break;
         }
+        case 3: {
+            tm.markAsCompleted();
+            break;
+        }
         case 4: {
             tm.showAllTasks();
+            break;
+        }
+        case 5: {
+            tm.removeTask();
+            break;
+        }
+        case 6: {
+            tm.clearAllTasks();
             break;
         }
         case 0:
