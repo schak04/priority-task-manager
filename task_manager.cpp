@@ -22,15 +22,16 @@ struct CompareTask {
 
 class TaskManager {
     public:
-    // declare the priority queue 'tasks'
-    priority_queue<Task, vector<Task>, CompareTask> tasks;
+    priority_queue<Task, vector<Task>, CompareTask> tasks; // priority queue 'tasks'
+    
+    vector<Task> tasksVec; // vector to store tasks from the priority queue when accessing by index would be needed
 
-    // method to add a task
+    // function to add a task
     void addTask(Task task) {
         tasks.push(task);
     }
 
-    // method to display all the tasks
+    // function to display all the tasks
     void showAllTasks() {
         if (tasks.empty()) {
             cout << "No tasks to show.\n"; return;
@@ -52,18 +53,21 @@ class TaskManager {
         cout << "--------------------------\n";
     }
 
-    // method to update a task
-    void updateTask() {
-        showAllTasks(); // so the user can choose which one to update
-
-        vector<Task> tasksVec; // declare a vector to store tasks from the priority queue
+    // helper function to extract all the tasks from the priority queue into a vector
+    void makeTasksVec() {
         priority_queue<Task, vector<Task>, CompareTask> temp = tasks; // temp priority queue
         
-        // extract all the tasks from the priority queue into a vector
         while (!temp.empty()) {
             tasksVec.push_back(temp.top());
             temp.pop();
         }
+    }
+
+    // function to update a task
+    void updateTask() {
+        showAllTasks(); // for user to choose which one to update
+
+        makeTasksVec(); // to be able to access and update by index
 
         cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn;
         cout << "Alright. Updating Task " << tn << "...\n";
@@ -85,13 +89,28 @@ class TaskManager {
         tasksVec[tn].priority = newPriority;
     }
 
-    // method to mark a task as completed
-    void markAsCompleted() {};
+    // function to mark a task as completed
+    void markAsCompleted() {
+        showAllTasks(); // for user to choose which one to mark as 'completed'
 
-    // method to remove a task
-    void removeTask() {};
+        makeTasksVec(); // to access by index and set the completed flag to 'true'
 
-    // method to remove or clear all the tasks
+        cout << "Which task would you like to mark as completed? (Enter task no.): "; int tn; cin>>tn;
+        tasksVec[tn].completed = true;
+        cout << "Selected task marked as completed.";
+    }
+    
+    // function to remove a task
+    void removeTask() {
+        showAllTasks(); // for user to choose which one to remove
+        
+        makeTasksVec(); // to access by index and remove
+        
+        cout << "Which task would you like to remove? (Enter task no.): "; int tn; cin>>tn;
+        // deletion yet to be implemented
+    }
+
+    // function to remove or clear all the tasks
     void clearAllTasks() {};
 };
 
