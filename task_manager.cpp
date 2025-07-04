@@ -13,7 +13,7 @@ class Task {
     bool completed;
 };
 
-// Comparator for Task to make a min-heap (lower value = higher priority)
+// comparator for Task to make a min-heap (lower value = higher priority)
 struct CompareTask {
     bool operator()(const Task& a, const Task& b) const {
         return a.priority > b.priority;
@@ -73,9 +73,8 @@ class TaskManager {
 
     // function to update a task
     void updateTask() {
-        showAllTasks(); // for user to choose which one to update
-
-        makeTasksVec(); // to be able to access and update by index
+        showAllTasks();
+        makeTasksVec();
 
         cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn; tn--;
 
@@ -109,9 +108,8 @@ class TaskManager {
 
     // function to mark a task as completed
     void markAsCompleted() {
-        showAllTasks(); // for user to choose which one to mark as 'completed'
-
-        makeTasksVec(); // to access by index and set the completed flag to 'true'
+        showAllTasks();
+        makeTasksVec();
 
         cout << "Which task would you like to mark as completed? (Enter task no.): "; int tn; cin>>tn; tn--;
         tasksVec[tn].completed = true;
@@ -123,9 +121,8 @@ class TaskManager {
     
     // function to remove a task
     void removeTask() {
-        showAllTasks(); // for user to choose which one to remove
-        
-        makeTasksVec(); // to access by index and remove
+        showAllTasks();
+        makeTasksVec();
         
         cout << "Which task would you like to remove? (Enter task no.): "; int tn; cin>>tn; tn--;
 
