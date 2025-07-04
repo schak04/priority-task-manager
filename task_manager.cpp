@@ -68,7 +68,7 @@ class TaskManager {
     // helper function to rebuild the priority queue
     void rebuildPriorityQueue() {
         tasks = priority_queue<Task, vector<Task>, CompareTask>();
-        for (auto& t : tasksVec) tasks.push(t);
+        for (Task& t : tasksVec) tasks.push(t);
     }
 
     // function to update a task
@@ -88,21 +88,17 @@ class TaskManager {
         cout << "Alright. Updating Task " << tn+1 << "...\n";
 
         cout << "Enter a new name for the task \"" << tasksVec[tn].taskName << "\": ";
-        string newName; getline(cin, newName);
-        tasksVec[tn].taskName = newName;
-        
+        getline(cin, tasksVec[tn].taskName);
+                
         cout << "Enter a new description for the task \"" << tasksVec[tn].taskName << "\": ";
-        string newDesc; getline(cin, newDesc);
-        tasksVec[tn].taskDesc = newDesc;
+        getline(cin, tasksVec[tn].taskDesc);
         
         cout << "Enter a new due date for the task \"" << tasksVec[tn].taskName << "\": ";
-        string newDate; getline(cin, newDate);
-        tasksVec[tn].date = newDate;
+        getline(cin, tasksVec[tn].date);
 
         cout << "Enter a new priority for the task \"" << tasksVec[tn].taskName << "\": ";
-        int newPriority; cin >> newPriority;
-        tasksVec[tn].priority = newPriority;
-
+        cin >> tasksVec[tn].priority;
+        
         rebuildPriorityQueue();
 
         cout << "Task updated successfully.\n";
