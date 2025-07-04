@@ -76,7 +76,9 @@ class TaskManager {
         showAllTasks();
         makeTasksVec();
 
-        cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn; tn--;
+        cout << "Which task do you want to update? (Enter task no.): "; int tn; cin >> tn;
+        cin.ignore(); // flush newline
+        tn--; // convert to 0-indexed
 
         if (tn < 0 || tn >= tasksVec.size()) {
             cout << "Invalid task number.\n";
@@ -142,10 +144,11 @@ class TaskManager {
     void clearAllTasks() {
         while (!tasks.empty()) tasks.pop();
         tasksVec.clear();
-        cout << "Clearing all the tasks...\n";
-        cout << "All tasks cleared.\n";
+        cout << "Clearing all the tasks...\nAll tasks cleared.\n";
     }
 };
+
+string fname;
 
 void printWelcomePage() {
     cout << "=================================================================\n";
@@ -153,8 +156,12 @@ void printWelcomePage() {
     cout << "=================================================================\n";
     cout << "| ~ ~ ~ ~ ~ ~ ~ ~ Manage your tasks efficiently ~ ~ ~ ~ ~ ~ ~ ~ |\n";
     cout << "=================================================================\n";
-    cout << "What's your first name? "; string fname; cin>>fname;
-    cout << "\nWhat would you like to do, " << fname << "?\n";
+    cout << "What's your first name? "; cin>>fname; cout<<"\n";
+}
+
+void printMenu() {
+    cout << "=================================================================\n";
+    cout << "What would you like to do, " << fname << "?\n";
     cout << "1. Add Task\n";
     cout << "2. Update Task\n";
     cout << "3. Mark Task as Completed\n";
@@ -170,18 +177,15 @@ int main() {
     TaskManager tm;
     int choice;
     do {
+        printMenu();
         cout << "Enter your choice: ";
         cin >> choice;
         switch (choice) {
         case 1: {
             Task t;
-            cout << "Enter task name: ";
-            cin.ignore();
-            getline(cin, t.taskName);
-            cout << "Enter task description: ";
-            getline(cin, t.taskDesc);
-            cout << "Enter due date (DD-MM-YYYY): ";
-            getline(cin, t.date);
+            cout << "Enter task name: "; cin.ignore(); getline(cin, t.taskName);
+            cout << "Enter task description: "; getline(cin, t.taskDesc);
+            cout << "Enter due date (DD-MM-YYYY): "; getline(cin, t.date);
             cout << "Enter priority (1 = highest priority): ";
             while (true) {
                 cin >> t.priority;
