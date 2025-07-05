@@ -4,14 +4,6 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 ---
 
-## Technologies Used
-
-- Language: **C++**
-- C++ **Standard Template Library (STL)**
-- SQLite (Ongoing)
-
----
-
 ## Features
 
 - Console-based app (initial build)
@@ -24,6 +16,14 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 - Clear all tasks
 - Data persistence through SQLite (Ongoing)
 - GUI integration (Upcoming)
+
+---
+
+## Technologies Used
+
+- Language: **C++**
+- C++ **Standard Template Library (STL)**
+- SQLite (Ongoing)
 
 ---
 
