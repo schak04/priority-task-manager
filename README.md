@@ -14,7 +14,7 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 ## Features
 
-- Console based
+- Console-based app (initial build)
 - Welcome page (in the terminal)
 - Add task
 - Update task
