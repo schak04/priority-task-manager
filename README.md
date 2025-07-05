@@ -4,6 +4,29 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 ---
 
+## Technologies Used
+
+- Language: **C++**
+- C++ **Standard Template Library (STL)**
+- SQLite (Ongoing)
+
+---
+
+## Features
+
+- Console based
+- Welcome page (in the terminal)
+- Add task
+- Update task
+- Mark task as completed
+- Show all tasks
+- Remove task
+- Clear all tasks
+- Data persistence through SQLite (Ongoing)
+- GUI integration (Upcoming)
+
+---
+
 ## Current Status
 
 Work in progress
