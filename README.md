@@ -23,7 +23,7 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 - Language: **C++**
 - C++ **Standard Template Library (STL)**
-- SQLite (Ongoing)
+- Database: **SQLite** (Ongoing)
 
 ---
 
