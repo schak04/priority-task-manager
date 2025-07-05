@@ -1,3 +1,5 @@
 .vscode
+*.o
 *.exe
 sqlite3.*
+tasks.db

@@ -2,6 +2,10 @@
 #include <string>
 #include <queue>
 #include <vector>
+extern "C" {
+    #include "sqlite3.h"
+}
+sqlite3* db;
 using namespace std;
 
 class Task {
@@ -142,6 +146,35 @@ class TaskManager {
         tasksVec.clear();
         cout << "Clearing all the tasks...\nAll tasks cleared.\n";
     }
+
+    // function to add tasks to database
+    bool addTaskToDB(const Task& t) {
+        const char* sql = "INSERT INTO tasks (name, description, due_date, priority, completed) VALUES (?, ?, ?, ?, ?);";
+        sqlite3_stmt* stmt;
+
+        if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+            cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
+            return false;
+        }
+
+        // bind values
+        sqlite3_bind_text(stmt, 1, t.taskName.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, t.taskDesc.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, t.date.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 4, t.priority);
+        sqlite3_bind_int(stmt, 5, t.completed ? 1 : 0);
+
+        // execute
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            cerr << "Failed to insert task: " << sqlite3_errmsg(db) << endl;
+            sqlite3_finalize(stmt);
+            return false;
+        }
+
+        sqlite3_finalize(stmt);
+        return true;
+    }
+
 };
 
 string fname;
@@ -168,7 +201,41 @@ void printMenu() {
     cout << "=================================================================\n";
 }
 
+bool initDB() {
+    int rc = sqlite3_open("tasks.db", &db);
+    if (rc) {
+        cerr << "Can't open database: " << sqlite3_errmsg(db) << endl;
+        return false;
+    }
+
+    const char* createTableSQL = R"(
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT,
+            due_date TEXT,
+            priority INTEGER,
+            completed INTEGER
+        );
+    )";
+
+    char* errMsg = nullptr;
+    rc = sqlite3_exec(db, createTableSQL, nullptr, nullptr, &errMsg);
+    if (rc != SQLITE_OK) {
+        cerr << "SQL error: " << errMsg << endl;
+        sqlite3_free(errMsg);
+        return false;
+    }
+
+    return true;
+}
+
 int main() {
+    if (!initDB()) {
+        cerr << "Database initialization failed. Exiting...\n";
+        return 1;
+    }
+
     printWelcomePage();
     TaskManager tm;
     int choice;
@@ -189,7 +256,12 @@ int main() {
                 cout << "Invalid input. Please enter a positive integer (1 = highest priority): ";
             }
             t.completed = false;
-            tm.addTask(t);
+            if (tm.addTaskToDB(t)) {
+                tm.addTask(t);
+                cout << "Task added to database successfully.\n";
+            } else {
+                cout << "Failed to add task to database.\n";
+            }
             break;
         }
         case 2: {
@@ -221,5 +293,6 @@ int main() {
         }
     } while (choice != 0);
 
+    sqlite3_close(db);
     return 0;
 }
