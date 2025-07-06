@@ -6,16 +6,13 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 ## Features
 
-- Console-based app (initial build)
-- Welcome page (in the terminal)
-- Add task
-- Update task
-- Mark task as completed
-- Show all tasks
-- Remove task
+- Console interface with welcome screen
+- Add, update, remove, and complete tasks
+- Show all tasks (ordered by priority)
 - Clear all tasks
-- Data persistence through SQLite
-- GUI integration (Upcoming)
+- Priority queue + vector for in-memory storage
+- Data persistence with SQLite
+- GUI coming soon
 
 ---
 

@@ -1,5 +1,9 @@
-.vscode
+# IDEs and build artifacts
+.vscode/
 *.o
+build/
+# Ignore all EXEs except the one in /bin
 *.exe
-sqlite3.*
-tasks.db
+!bin/task_manager.exe 
+# SQLite database
+data/tasks.db
