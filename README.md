@@ -1,17 +1,18 @@
 # Priority-Based Task Manager
 
-This is a task manager app that organizes tasks by priority, helping you get things done more effectively.
+This is a console-based task manager app that helps you stay productive by prioritizing your tasks.
 
 ---
 
 ## Features
 
 - Console interface with welcome screen
-- Add, update, remove, and complete tasks
-- Show all tasks (ordered by priority)
+- Add, update, complete, and remove tasks
+- Display all tasks (ordered by priority)
 - Clear all tasks
-- Priority queue + vector for in-memory storage
-- Data persistence with SQLite
+- In-memory storage using priority queue and vector
+- Persistent storage with SQLite
+- Cross-platform build scripts (Windows `.bat` and Linux/macOS `.sh`)
 - GUI coming soon
 
 ---
@@ -21,12 +22,18 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 - Language: **C++**
 - C++ **Standard Template Library (STL)**
 - Database: **SQLite**
+- Build Tools:
+  - `g++` (C++)
+  - `gcc` (C)
+  - `.bat` and `.sh` scripts for building and running
 
 ---
 
 ## Current Status
 
-Work in progress
+- Core features implemented
+- Functional CLI app made
+- GUI integration in progress
 
 ---
 
