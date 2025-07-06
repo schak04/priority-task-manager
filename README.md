@@ -1,5 +1,8 @@
 # Priority-Based Task Manager
 
+![C++](https://img.shields.io/badge/C++-blue?style=flat-square&logo=c%2B%2B&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=flat-square&logo=sqlite&logoColor=white)
+
 This is a console-based task manager app that helps you stay productive by prioritizing your tasks.
 
 ---
