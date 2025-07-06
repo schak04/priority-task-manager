@@ -29,22 +29,44 @@ class TaskManager {
     priority_queue<Task, vector<Task>, CompareTask> tasks; // priority queue 'tasks'
     vector<Task> tasksVec; // vector to store tasks from the priority queue when accessing by index would be needed
 
-    // function to add a task
+    // add task to in-memory priority queue
     void addTask(Task task) {
         tasks.push(task);
         cout << "Task added successfully.\n";
     }
 
-    // function to display all the tasks
+    // add task to database
+    bool addTaskToDB(const Task& t) {
+        const char* sql = "INSERT INTO tasks (name, description, due_date, priority, completed) VALUES (?, ?, ?, ?, ?);";
+        sqlite3_stmt* stmt;
+        if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+            cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
+            return false;
+        }
+        // bind values
+        sqlite3_bind_text(stmt, 1, t.taskName.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, t.taskDesc.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, t.date.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt, 4, t.priority);
+        sqlite3_bind_int(stmt, 5, t.completed ? 1 : 0);
+        // execute
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            cerr << "Failed to insert task: " << sqlite3_errmsg(db) << endl;
+            sqlite3_finalize(stmt);
+            return false;
+        }
+        sqlite3_finalize(stmt);
+        return true;
+    }
+
+    // display all tasks
     void showAllTasks() {
         const char* sql = "SELECT name, description, due_date, priority, completed FROM tasks ORDER BY priority ASC;";
         sqlite3_stmt* stmt;
-
         if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
             cerr << "Failed to fetch tasks: " << sqlite3_errmsg(db) << endl;
             return;
         }
-
         int idx = 1;
         bool anyTask = false;
         while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -70,34 +92,28 @@ class TaskManager {
         sqlite3_finalize(stmt);
     }
 
-    // helper function to extract all the tasks from the priority queue into a vector
+    // extract all the tasks from the priority queue into a vector
     void makeTasksVec() {
         tasksVec.clear(); // clear old data
         priority_queue<Task, vector<Task>, CompareTask> temp = tasks; // temp priority queue
-        
         while (!temp.empty()) {
             tasksVec.push_back(temp.top());
             temp.pop();
         }
     }
 
-    // helper function to rebuild the priority queue
+    // rebuild the priority queue
     void rebuildPriorityQueue() {
         tasks = priority_queue<Task, vector<Task>, CompareTask>();
         for (Task& t : tasksVec) tasks.push(t);
     }
 
-    // function to update a task
+    // update task
     void updateTask() {
         showAllTasks();
         makeTasksVec();
-
         cout << "Which task do you want to update? (Enter task no.): ";
-        int tn;
-        cin >> tn;
-        cin.ignore(); // flush newline
-        tn--; // convert to 0-indexed
-
+        int tn; cin >> tn; cin.ignore(); tn--;
         if (tn < 0 || tn >= tasksVec.size()) {
             cout << "Invalid task number.\n";
             return;
@@ -108,16 +124,12 @@ class TaskManager {
 
         // prompt for new details
         cout << "Alright. Updating Task " << tn + 1 << "...\n";
-
         cout << "Enter a new name for the task \"" << tasksVec[tn].taskName << "\": ";
         getline(cin, tasksVec[tn].taskName);
-
         cout << "Enter a new description for the task \"" << tasksVec[tn].taskName << "\": ";
         getline(cin, tasksVec[tn].taskDesc);
-
         cout << "Enter a new due date for the task \"" << tasksVec[tn].taskName << "\": ";
         getline(cin, tasksVec[tn].date);
-
         cout << "Enter a new priority for the task \"" << tasksVec[tn].taskName << "\": ";
         cin >> tasksVec[tn].priority;
 
@@ -127,9 +139,7 @@ class TaskManager {
             SET name = ?, description = ?, due_date = ?, priority = ?
             WHERE name = ? AND description = ? AND due_date = ? AND priority = ? AND completed = ?
         )";
-
         sqlite3_stmt* stmt;
-
         if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
             cerr << "Failed to prepare update statement: " << sqlite3_errmsg(db) << endl;
             return;
@@ -147,32 +157,27 @@ class TaskManager {
         sqlite3_bind_text(stmt, 7, original.date.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 8, original.priority);
         sqlite3_bind_int(stmt, 9, original.completed ? 1 : 0);
-
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             cerr << "Failed to update task in database: " << sqlite3_errmsg(db) << endl;
             sqlite3_finalize(stmt);
             return;
         }
-
         sqlite3_finalize(stmt);
 
         // sync changes to memory
         rebuildPriorityQueue();
-
         cout << "Task updated successfully.\n";
     }
 
 
-    // function to mark a task as completed
+    // mark task as completed
     void markAsCompleted() {
         showAllTasks();
         makeTasksVec();
-
         cout << "Which task would you like to mark as completed? (Enter task no.): ";
         int tn;
         cin >> tn;
         tn--;
-
         if (tn < 0 || tn >= tasksVec.size()) {
             cout << "Invalid task number.\n";
             return;
@@ -195,22 +200,19 @@ class TaskManager {
         sqlite3_bind_text(stmt, 2, t.taskDesc.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(stmt, 3, t.date.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(stmt, 4, t.priority);
-
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             cerr << "Failed to update task: " << sqlite3_errmsg(db) << endl;
             sqlite3_finalize(stmt);
             return;
         }
-
         sqlite3_finalize(stmt);
-
-        // reflect change in memory
+        
         rebuildPriorityQueue();
 
         cout << "Selected task marked as completed.\n";
     }
 
-    // function to remove a task
+    // remove task
     void removeTask() {
         showAllTasks();
         makeTasksVec();
@@ -228,7 +230,7 @@ class TaskManager {
         // get the task to delete
         Task taskToDelete = tasksVec[tn];
 
-        // delete from DB
+        // delete from database
         const char* sql = "DELETE FROM tasks WHERE name = ? AND description = ? AND due_date = ? AND priority = ? AND completed = ?";
         sqlite3_stmt* stmt;
 
@@ -253,12 +255,13 @@ class TaskManager {
 
         // remove from in-memory vector
         tasksVec.erase(tasksVec.begin() + tn);
+
         rebuildPriorityQueue();
 
         cout << "Task removed successfully.\n";
     }
 
-    // function to clear all tasks
+    // clear all tasks
     void clearAllTasks() {
         const char* sql = "DELETE FROM tasks;";
         char* errMsg = nullptr;
@@ -269,38 +272,10 @@ class TaskManager {
             return;
         }
 
-        // clear the in-memory task queue as well
+        // clear the in-memory priority queue 'tasks' as well
         while (!tasks.empty()) tasks.pop();   
         cout << "Clearing all the tasks...\n";
         cout << "All tasks cleared successfully.\n";
-    }
-    
-    // function to add tasks to database
-    bool addTaskToDB(const Task& t) {
-        const char* sql = "INSERT INTO tasks (name, description, due_date, priority, completed) VALUES (?, ?, ?, ?, ?);";
-        sqlite3_stmt* stmt;
-
-        if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-            cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
-            return false;
-        }
-
-        // bind values
-        sqlite3_bind_text(stmt, 1, t.taskName.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, t.taskDesc.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 3, t.date.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 4, t.priority);
-        sqlite3_bind_int(stmt, 5, t.completed ? 1 : 0);
-
-        // execute
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            cerr << "Failed to insert task: " << sqlite3_errmsg(db) << endl;
-            sqlite3_finalize(stmt);
-            return false;
-        }
-
-        sqlite3_finalize(stmt);
-        return true;
     }
 };
 
@@ -328,6 +303,7 @@ void printMenu() {
     cout << "=================================================================\n";
 }
 
+// initialize database
 bool initDB() {
     int rc = sqlite3_open("tasks.db", &db);
     if (rc) {
@@ -345,7 +321,7 @@ bool initDB() {
             completed INTEGER
         );
     )";
-
+    
     char* errMsg = nullptr;
     rc = sqlite3_exec(db, createTableSQL, nullptr, nullptr, &errMsg);
     if (rc != SQLITE_OK) {
