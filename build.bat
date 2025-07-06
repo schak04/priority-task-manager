@@ -9,5 +9,5 @@ REM Link both to create executable
 g++ task_manager.o sqlite3.o -o task_manager.exe -static
 
 echo.
-echo Build complete. Run it with: run.bat. Press any key to continue...
+echo Build complete. Run it with: run.bat
 pause
