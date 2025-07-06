@@ -1,11 +1,11 @@
 @echo off
-REM Build SQLite C file with C compiler
+echo Compiling SQLite source...
 gcc -c sqlite3.c -o sqlite3.o
 
-REM Build C++ file
+echo Compiling C++ source...
 g++ -c task_manager.cpp -o task_manager.o
 
-REM Link both to create executable
+echo Linking both to create executable...
 g++ task_manager.o sqlite3.o -o task_manager.exe -static
 
 echo.
