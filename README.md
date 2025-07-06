@@ -14,7 +14,7 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 - Show all tasks
 - Remove task
 - Clear all tasks
-- Data persistence through SQLite (Ongoing)
+- Data persistence through SQLite
 - GUI integration (Upcoming)
 
 ---
@@ -23,7 +23,7 @@ This is a task manager app that organizes tasks by priority, helping you get thi
 
 - Language: **C++**
 - C++ **Standard Template Library (STL)**
-- Database: **SQLite** (Ongoing)
+- Database: **SQLite**
 
 ---
 
