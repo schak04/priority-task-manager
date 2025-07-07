@@ -48,12 +48,12 @@ cd priority-task-manager
 ```bash
 priority-task-manager/
 │
-├── bin/             <- Final EXE goes here
-├── build/           <- Object files (*.o) go here
-├── data/            <- SQLite database file (tasks.db)
-├── lib/             <- `sqlite3.c` and `sqlite3.h` (amalgamation files)
-├── scripts/         <- Build and run scripts (`.bat`/`.sh`)
-├── src/             <- Main C++ source code (`task_manager.cpp`)
+├── bin/         <- Final EXE goes here
+├── build/       <- Object files (`*.o`) go here
+├── data/        <- SQLite database file (`tasks.db`)
+├── lib/         <- `sqlite3.c` and `sqlite3.h` (amalgamation files)
+├── scripts/     <- Build and run scripts (`.bat`/`.sh`)
+├── src/         <- Main C++ source code (`task_manager.cpp`)
 ├── .gitignore
 ├── README.md
 ```
