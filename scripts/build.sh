@@ -11,9 +11,10 @@ SRC_DIR="$ROOT_DIR/src"
 LIB_DIR="$ROOT_DIR/lib"
 BUILD_DIR="$ROOT_DIR/build"
 BIN_DIR="$ROOT_DIR/bin"
+DATA_DIR="$ROOT_DIR/data"
 
-# Ensure build and bin directories exist
-mkdir -p "$BUILD_DIR" "$BIN_DIR"
+# Ensure required directories exist
+mkdir -p "$BUILD_DIR" "$BIN_DIR" "$DATA_DIR"
 
 echo "Compiling SQLite source..."
 gcc -c "$LIB_DIR/sqlite3.c" -o "$BUILD_DIR/sqlite3.o"
