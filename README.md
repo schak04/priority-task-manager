@@ -100,6 +100,7 @@ priority-task-manager/
 ├── lib/         <- sqlite3.c and sqlite3.h
 ├── scripts/     <- Build and run scripts
 ├── src/         <- Main C++ source code
+├── .gitattributes
 ├── .gitignore
 ├── README.md
 ```
