@@ -49,7 +49,9 @@ cd priority-task-manager
 
 **Build:**
 
-Double-click or run the script via terminal:
+Go to `scripts` -> Double-click `build.bat`.
+
+Or run the script via terminal:
 
 ```cmd
 scripts\build.bat
@@ -57,10 +59,9 @@ scripts\build.bat
 
 **Run:**
 
-1. Go to `scripts/run.bat`
-2. Double-click `run.bat`
+Go to `scripts` -> Double-click `run.bat`.
 
-Or:
+Or run the script via terminal:
 
 ```cmd
 scripts\run.bat
@@ -93,22 +94,24 @@ chmod +x scripts/build.sh
 ```bash
 priority-task-manager/
 │
-├── bin/         <- Final EXE goes here
-├── build/       <- Object files (`*.o`) go here
-├── data/        <- SQLite database file (`tasks.db`)
-├── lib/         <- `sqlite3.c` and `sqlite3.h` (amalgamation files)
-├── scripts/     <- Build and run scripts (`.bat`/`.sh`)
-├── src/         <- Main C++ source code (`task_manager.cpp`)
+├── bin/         <- Final executable goes here
+├── build/       <- Object files go here
+├── data/        <- SQLite database file
+├── lib/         <- sqlite3.c and sqlite3.h
+├── scripts/     <- Build and run scripts
+├── src/         <- Main C++ source code
 ├── .gitignore
 ├── README.md
 ```
+
+> All directories (like bin/, build/, data/) are auto-created during build. No need to create them manually.
 
 ---
 
 ## Current Status
 
 - Core features implemented
-- Functional CLI app made
+- Fully functional CLI app
 - GUI integration in progress
 
 ---
