@@ -32,7 +32,21 @@ This is a console-based task manager app that helps you stay productive by prior
 
 ---
 
-## Installation
+## Run on Windows (Prebuilt EXE, No Installation Required)
+
+If you're a regular user and just want to **run the app on Windows**, follow these steps:
+
+1. **Go to the [Releases](https://github.com/schak04/priority-task-manager/releases) section of this repo.**
+2. **Download the `.zip` bundle** attached to the latest release.
+3. **Extract** the zip file.
+4. Open the extracted folder and go to the `bin/` directory.
+5. **Double-click `task_manager.exe`** to run the app.
+
+> **Do not move the EXE out of the `bin/` folder.**
+
+---
+
+## How to Build and Run
 
 ### Clone the Repository
 
@@ -40,10 +54,6 @@ This is a console-based task manager app that helps you stay productive by prior
 git clone https://github.com/schak04/priority-task-manager.git
 cd priority-task-manager
 ```
-
----
-
-## How to Build and Run
 
 ### On Windows
 
