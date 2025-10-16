@@ -7,3 +7,6 @@ bin/
 
 # SQLite database
 data/tasks.db
+
+# Installer
+installer
