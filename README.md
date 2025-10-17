@@ -32,7 +32,7 @@ This is a console-based task manager app that helps you stay productive by prior
 
 ---
 
-## Run on Windows (Prebuilt App Bundle; No Building Required to Run)
+## Run on Windows (Prebuilt App Bundle; No Cloning and Building Required to Run)
 
 If you're a regular user and just want to **run the app on Windows**, follow these steps:
 
