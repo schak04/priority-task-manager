@@ -8,5 +8,7 @@ bin/
 # SQLite database
 data/tasks.db
 
-# Installer
+# Installer, app bundle, and icons
 installer
+app_bundle
+icons
