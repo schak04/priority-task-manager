@@ -32,9 +32,13 @@ This is a console-based task manager app that helps you stay productive by prior
 
 ---
 
-## Run on Windows (Prebuilt EXE, No Installation Required)
+## Run on Windows (Prebuilt App Bundle; No Building Required to Run)
 
 If you're a regular user and just want to **run the app on Windows**, follow these steps:
+
+**Either: Download the installer `prioritytaskmanager_setup.exe` and install the app bundle using it.**
+
+**Or:**
 
 1. **Go to the [Releases](https://github.com/schak04/priority-task-manager/releases) section of this repo.**
 2. **Download the `.zip` bundle** attached to the latest release.
