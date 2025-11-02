@@ -111,12 +111,12 @@ chmod +x scripts/build.sh
 ```bash
 priority-task-manager/
 │
-├── bin/         <- Final executable goes here
-├── build/       <- Object files go here
-├── data/        <- SQLite database file
-├── lib/         <- sqlite3.c and sqlite3.h
-├── scripts/     <- Build and run scripts
-├── src/         <- Main C++ source code
+├── bin/                <- Final executable goes here
+├── build/              <- Object files go here
+├── data/               <- SQLite database file
+├── lib/                <- sqlite3.c and sqlite3.h
+├── scripts/            <- Build and run scripts
+├── src/                <- Main C++ source code
 ├── .gitattributes
 ├── .gitignore
 ├── README.md
